@@ -203,9 +203,11 @@ jobs:
       if: env.ENABLE_KERNELSU == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
+        # Clone KernelSU-Next instead of using the standard KernelSU setup script
+        git clone https://github.com/KernelSU-Next/KernelSU-Next.git KernelSU --depth=1
+        # Get version number for naming
         KSU_VERSION=$(cd KernelSU && expr $(/usr/bin/git rev-list --count HEAD) + 10200)
-        echo "UPLOADNAME=-KernelSU_$KSU_VERSION" >> $GITHUB_ENV
+        echo "UPLOADNAME=-KernelSU-Next_$KSU_VERSION" >> $GITHUB_ENV
 
     - name: Setup Configuration for Kernel
       run: |
